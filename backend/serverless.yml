@@ -1,0 +1,35 @@
+service: mongodb-crud-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+
+functions:
+  mongocrud:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: /MongocrudAPI
+          method: ANY
+          cors: true
+      - http:
+          path: /MongocrudAPI/{user_id}
+          method: ANY
+          cors: true
+      - http:
+          path: /MongocrudAPI/list
+          method: GET
+          cors: true
+      - http:
+          path: /MongocrudAPI/add
+          method: POST
+          cors: true
+
+plugins:
+  - serverless-python-requirements
+  - serverless-dotenv-plugin
